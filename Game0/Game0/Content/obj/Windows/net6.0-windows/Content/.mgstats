@@ -1,0 +1,4 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/Josh/Desktop/Game0/Game0/Game0/Content/arial.spritefont","C:/Users/Josh/Desktop/Game0/Game0/Game0/Content/bin/Windows/Content/consolas.xnb","FontDescriptionProcessor","SpriteFontContent",2071,136223,0.1975913
+"C:/Users/Josh/Desktop/Game0/Game0/Game0/Content/exit.spritefont","C:/Users/Josh/Desktop/Game0/Game0/Game0/Content/bin/Windows/Content/exit.xnb","FontDescriptionProcessor","SpriteFontContent",2071,13343,0.1685465
+"C:/Users/Josh/Desktop/Game0/Game0/Game0/Content/star.png","C:/Users/Josh/Desktop/Game0/Game0/Game0/Content/bin/Windows/Content/star.xnb","TextureProcessor","Texture2DContent",72267,1048661,0.1174335

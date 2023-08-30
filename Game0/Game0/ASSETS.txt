@@ -1,0 +1,3 @@
+﻿Content/star.png - created by Ecrivain of OpenGameArt.org (https://opengameart.org/content/star) and released under the public domain
+
+Content/astronaut.png - Created by peony of OpenGameArt.org (https://opengameart.org/content/space-pixel-art) and released under CC-BY 4.0
