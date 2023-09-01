@@ -10,24 +10,31 @@ using System.Threading.Tasks;
 
 namespace Game0
 {
+    
     public enum Direction
     {
         Down = 0,
         Up = 1,
     }
+    
 
     /// <summary>
     /// A class representing an astronaut sprite
     /// </summary>
     public class AstroSprite
     {
-        private Texture2D texture;
+        private Texture2D landAstro;
+        private Texture2D jumpAstro;
 
         private double directionTimer;
 
         private double animationTimer;
 
-        private short animationFrame = 1;
+        private short animationFrame = 0;
+
+
+        private double jumpAnimationTimer;
+        private bool isJumpAnimationComplete = false;
 
         /// <summary>
         /// The direction of the astronaut
@@ -40,12 +47,36 @@ namespace Game0
         public Vector2 Position;
 
         /// <summary>
+        /// If the astronaut is jumping or not
+        /// </summary>
+        public bool IsJumping { get; set; } = true;
+
+        /// <summary>
+        /// The texture to load in Game0 Draw()
+        /// </summary>
+        public Texture2D Texture
+        {
+            get
+            {
+                return IsJumping ? jumpAstro : landAstro;
+            }
+        }
+
+
+        public AstroSprite(Texture2D landAstro, Texture2D jumpAstro)
+        {
+            this.landAstro = landAstro;
+            this.jumpAstro = jumpAstro;
+        }
+
+        /// <summary>
         /// Loads the astronaut texture
         /// </summary>
         /// <param name="content">the ContentManager to load with</param>
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("astro");
+            landAstro = content.Load<Texture2D>("land");
+            jumpAstro = content.Load<Texture2D>("jump");
         }
 
         /// <summary>
@@ -54,11 +85,46 @@ namespace Game0
         /// <param name="gameTime">The game time</param>
         public void Update(GameTime gameTime)
         {
-            // Update direction timer
-            directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            // Update jump animation timer
+            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Switch Directions every .5 seconds
-            if(directionTimer > 0.5)
+            // Update jump animation timer only when the astronaut is jumping
+            if (IsJumping)
+            {
+                jumpAnimationTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (!isJumpAnimationComplete && jumpAnimationTimer >= 0.1)
+                {
+                    animationFrame = (short)((animationFrame + 1) % 4); 
+                    jumpAnimationTimer = 0;
+
+                    if (animationFrame == 0) 
+                    {
+                        isJumpAnimationComplete = true; 
+                        jumpAnimationTimer = 0; 
+                    }
+                }
+
+                // Reset jump animation when jump animation is complete
+                if (isJumpAnimationComplete)
+                {
+                    isJumpAnimationComplete = false; 
+                    animationFrame = 0; 
+                    IsJumping = false; 
+                }
+
+                Position.Y -= 2;
+            }
+            else Position.Y += 2;
+
+            if (!IsJumping && animationTimer > 1.0) 
+            {
+                IsJumping = true;
+                animationTimer = 0;
+            }
+
+            // Switch Directions every .8 seconds
+            if (directionTimer > 0.8)
             {
                 switch (Direction)
                 {
@@ -70,8 +136,9 @@ namespace Game0
                         Direction = Direction.Up;
                         break;
                 }
-                directionTimer -= 0.5;
+                directionTimer -= 0.8;
             }
+
         }
 
         /// <summary>
@@ -81,20 +148,12 @@ namespace Game0
         /// <param name="spriteBatch">The SpriteBatch to draw with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Update animation timer
-            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            Texture2D currentTexture = IsJumping ? jumpAstro : landAstro;
 
-            // Update animation frame
-            if(animationTimer > 0.5)
-            {
-                animationFrame++;
-                if (animationFrame > 3) animationFrame = 1;
-                animationTimer -= 0.5;
-            }
+            int frameWidth = currentTexture.Width / 4;
+            Rectangle sourceRect = new Rectangle(animationFrame * frameWidth, 0, frameWidth, currentTexture.Height);
 
-            // draw the sprite
-            var rect = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
-            spriteBatch.Draw(texture, Position, rect, Color.White);
+            spriteBatch.Draw(currentTexture, Position, sourceRect, Color.White);
         }
     }
 }

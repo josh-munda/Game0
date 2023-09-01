@@ -40,3 +40,5 @@ C:\Users\Josh\Desktop\Game0\Game0\Game0\bin\Debug\net6.0-windows\Content\arial.x
 C:\Users\Josh\Desktop\Game0\Game0\Game0\bin\Debug\net6.0-windows\Content\star.xnb
 C:\Users\Josh\Desktop\Game0\Game0\Game0\bin\Debug\net6.0-windows\Content\exit.xnb
 C:\Users\Josh\Desktop\Game0\Game0\Game0\bin\Debug\net6.0-windows\Content\Consolas.xnb
+C:\Users\Josh\Desktop\Game0\Game0\Game0\bin\Debug\net6.0-windows\Content\jump.xnb
+C:\Users\Josh\Desktop\Game0\Game0\Game0\bin\Debug\net6.0-windows\Content\land.xnb

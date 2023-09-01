@@ -13,6 +13,7 @@ namespace Game0
         private StarSprite[] stars;
         private SpriteFont spriteFont;
         private SpriteFont exit;
+        private AstroSprite astro;
 
         public Game0()
         {
@@ -52,6 +53,10 @@ namespace Game0
             foreach (var star in stars) star.LoadContent(Content);
             spriteFont = Content.Load<SpriteFont>("consolas");
             exit = Content.Load<SpriteFont>("exit");
+            astro = new AstroSprite(Content.Load<Texture2D>("land"), Content.Load<Texture2D>("jump"))
+            {
+                IsJumping = true
+            };
         }
 
         protected override void Update(GameTime gameTime)
@@ -66,6 +71,7 @@ namespace Game0
 
             // TODO: Add your update logic here
             //foreach(var star in stars) star.Update(gameTime);
+            astro.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -74,12 +80,20 @@ namespace Game0
         {
             GraphicsDevice.Clear(Color.Black);
 
+            Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            Vector2 astroSize = new Vector2(32, 32);
+
+            Vector2 astroPosition = center - (astroSize / 2);
+
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             foreach (var star in stars) star.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(spriteFont, $"Star Bounce", new Vector2(253, 100), Color.Gray);
+            spriteBatch.DrawString(spriteFont, $"Star Bounce", new Vector2(253, 100), Color.LightGray);
             spriteBatch.DrawString(spriteFont, $"Star Bounce", new Vector2(250, 100), Color.White);
             spriteBatch.DrawString(exit, $"Click Escape or B to Exit", new Vector2(615, 464), Color.White);
+            spriteBatch.Draw(astro.Texture, astroPosition, null, Color.White, 0f, Vector2.Zero,
+                             new Vector2(astroSize.X / astro.Texture.Width, astroSize.Y / astro.Texture.Height),
+                             SpriteEffects.None, 0f);
             spriteBatch.End();
 
             base.Draw(gameTime);
